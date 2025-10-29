@@ -1,66 +1,73 @@
-<<<<<<< HEAD
-# Production Application Configuration
+# Unified Application Configuration for DevOpsSimulator
+# Combines Production, Development, and Experimental environments
+
 application:
   name: DevOpsSimulator
-  version: 1.0.0
-  environment: production
-  
+  version: 3.0.0-experimental
+  environments:
+    - production
+    - development
+    - testing
+
+# Server configuration
 server:
   host: 0.0.0.0
-  port: 8080
-  ssl_enabled: true
-  
+  port: ${PORT:-8080}
+  ssl_enabled: ${SSL_ENABLED:-true}
+  hot_reload: ${HOT_RELOAD:-false}
+  multi_port: [8080, 9000, 9001]
+
+# Logging configuration
 logging:
-  level: INFO
-  format: json
-  output: /var/log/app.log
-  
+  level: ${LOG_LEVEL:-INFO}
+  format: ${LOG_FORMAT:-json}
+  output: ${LOG_OUTPUT:-/var/log/app.log}
+  show_stack_trace: ${SHOW_STACK_TRACE:-false}
+  ai_analysis: ${AI_ANALYSIS:-disabled}
+
+# Database configuration
 database:
-  host: prod-db.example.com
+  host: ${DB_HOST:-localhost}
   port: 5432
-  name: devops_prod
-  
+  name: ${DB_NAME:-devops_default}
+  distributed: ${DB_DISTRIBUTED:-false}
+
+# Feature flags
 features:
-  auto_scaling: true
-  load_balancer: enabled
-  backup_enabled: true
-=======
-# Development Application Configuration
-application:
-  name: DevOpsSimulator
-  version: 2.0.0-beta
-  environment: development
-  
-server:
-  host: localhost
-  port: 3000
-  ssl_enabled: false
-  hot_reload: true
-  
-logging:
-  level: DEBUG
-  format: pretty
-  output: console
-  show_stack_trace: true
-  
-database:
-  host: localhost
-  port: 5432
-  name: devops_dev
-  
-features:
-  auto_scaling: false
-  load_balancer: disabled
-  backup_enabled: false
-  experimental_features: true
-  
+  auto_scaling: ${AUTO_SCALING:-true}
+  load_balancer: ${LOAD_BALANCER:-enabled}
+  backup_enabled: ${BACKUP_ENABLED:-true}
+  experimental_features: ${EXPERIMENTAL_FEATURES:-false}
+  chaos_engineering: ${CHAOS_ENGINEERING:-disabled}
+
+# AI & automation capabilities
+ai_features:
+  predictive_scaling: ${PREDICTIVE_SCALING:-true}
+  anomaly_detection: ${ANOMALY_DETECTION:-true}
+  auto_optimization: ${AUTO_OPTIMIZATION:-true}
+  model_version: "v2.1.0"
+
+# Development-specific options
 development:
-  mock_external_apis: true
-  debug_mode: true
-  cors_enabled: true
-  
+  mock_external_apis: ${MOCK_EXTERNAL_APIS:-false}
+  debug_mode: ${DEBUG_MODE:-false}
+  cors_enabled: ${CORS_ENABLED:-true}
+
+# Notifications
 notifications:
-  slack_webhook: "https://hooks.slack.com/services/XXX"
-  discord_webhook: "https://discord.com/api/webhooks/YYY"
-  email_alerts: false
->>>>>>> dev
+  slack_webhook: ${SLACK_WEBHOOK:-""}
+  discord_webhook: ${DISCORD_WEBHOOK:-""}
+  email_alerts: ${EMAIL_ALERTS:-true}
+
+# Security configuration
+security:
+  zero_trust: ${ZERO_TRUST:-enabled}
+  encryption: AES-256
+  audit_logging: comprehensive
+
+# Supported cloud providers
+cloud_providers:
+  - aws
+  - azure
+  - gcp
+  - digitalocean

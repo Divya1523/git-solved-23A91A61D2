@@ -1,113 +1,133 @@
 /**
-<<<<<<< HEAD
- * System Monitoring Script - Production
- * Monitors application health and performance
+ * Unified System Monitoring Script
+ * Versions:
+ *  - v1.0 (Production)
+ *  - v2.0-beta (Development)
+ *  - v3.0-experimental (AI-Enhanced)
+ *
+ * Supports adaptive monitoring modes: production | development | experimental
  */
 
-const monitorConfig = {
-  interval: 60000, // 1 minute
-  alertThreshold: 80,
-  metricsEndpoint: 'http://localhost:8080/metrics'
+const ENV = process.env.MONITOR_ENV || 'development';
+
+const configs = {
+  production: {
+    interval: 60000, // 1 minute
+    alertThreshold: 80,
+    metricsEndpoint: 'http://localhost:8080/metrics',
+    debugMode: false,
+    aiEnabled: false,
+  },
+
+  development: {
+    interval: 5000, // 5 seconds
+    alertThreshold: 90,
+    metricsEndpoint: 'http://localhost:3000/metrics',
+    debugMode: true,
+    verboseLogging: true,
+    aiEnabled: false,
+  },
+
+  experimental: {
+    interval: 30000, // 30 seconds
+    alertThreshold: 75,
+    metricsEndpoint: 'http://localhost:9000/metrics',
+    aiEnabled: true,
+    mlModelPath: './models/anomaly-detection.h5',
+    cloudProviders: ['aws', 'azure', 'gcp'],
+    predictiveWindow: 300,
+  },
 };
 
-console.log('=================================');
-console.log('DevOps Simulator - Monitor v1.0');
-console.log('=================================');
+const monitorConfig = configs[ENV] || configs.development;
 
-function checkSystemHealth() {
-  console.log(`[${new Date().toISOString()}] Checking system health...`);
-  
-  // Check CPU usage
-  console.log('✓ CPU usage: Normal');
-  
-  // Check Memory
-  console.log('✓ Memory usage: Normal');
-  
-  // Check Disk
-  console.log('✓ Disk space: Adequate');
-  
-  console.log('System Status: HEALTHY');
-=======
- * System Monitoring Script - Development
- * Enhanced monitoring with debug features
- */
+console.log('================================================');
+console.log(`DevOps Simulator - Unified Monitor (${ENV.toUpperCase()})`);
+console.log('================================================');
 
-const monitorConfig = {
-  interval: 5000, // 5 seconds (faster for development)
-  alertThreshold: 90,
-  metricsEndpoint: 'http://localhost:3000/metrics',
-  debugMode: true,
-  verboseLogging: true
-};
+// ----------- AI-PREDICTIVE FUNCTIONS (Experimental Only) -----------
+function predictFutureMetrics() {
+  console.log('\n🤖 AI Prediction Engine: Analyzing trends...');
+  const prediction = {
+    cpu: Math.random() * 100,
+    memory: Math.random() * 100,
+    traffic: Math.random() * 1000,
+    confidence: (Math.random() * 30 + 70).toFixed(2),
+  };
 
-console.log('=================================');
-console.log('DevOps Simulator - Monitor v2.0-beta');
-console.log('Development Mode: ENABLED');
-console.log('=================================');
+  console.log(`📊 Predicted metrics (${monitorConfig.predictiveWindow}s ahead):`);
+  console.log(`   CPU: ${prediction.cpu.toFixed(2)}% (confidence: ${prediction.confidence}%)`);
+  console.log(`   Memory: ${prediction.memory.toFixed(2)}% (confidence: ${prediction.confidence}%)`);
+  console.log(`   Traffic: ${prediction.traffic.toFixed(0)} req/s`);
 
+  if (prediction.cpu > monitorConfig.alertThreshold) {
+    console.log('⚠️  Predictive Alert: High CPU expected — Pre-scaling initiated');
+  }
+}
+
+// ----------- MAIN HEALTH CHECK FUNCTION -----------
 function checkSystemHealth() {
   const timestamp = new Date().toISOString();
-  
-  if (monitorConfig.debugMode) {
-    console.log(`\n[${timestamp}] === DETAILED HEALTH CHECK ===`);
-  } else {
-    console.log(`[${timestamp}] Checking system health...`);
-  }
-  
-  // Check CPU usage
+  console.log(`\n[${timestamp}] === SYSTEM HEALTH CHECK ===`);
+
   const cpuUsage = Math.random() * 100;
-  console.log(`✓ CPU usage: ${cpuUsage.toFixed(2)}%`);
-  
-  // Check Memory
   const memUsage = Math.random() * 100;
-  console.log(`✓ Memory usage: ${memUsage.toFixed(2)}%`);
-  
-  // Check Disk
   const diskUsage = Math.random() * 100;
-  console.log(`✓ Disk space: ${diskUsage.toFixed(2)}% used`);
-  
-  // Development-specific checks
+
+  console.log(`CPU: ${cpuUsage.toFixed(2)}%`);
+  console.log(`Memory: ${memUsage.toFixed(2)}%`);
+  console.log(`Disk: ${diskUsage.toFixed(2)}% used`);
+
   if (monitorConfig.debugMode) {
-    console.log('✓ Hot reload: Active');
-    console.log('✓ Debug port: 9229');
-    console.log('✓ Source maps: Enabled');
+    console.log('\n[DEV DEBUG] Hot reload active, source maps enabled');
   }
-  
-  // Status determination
+
+  if (monitorConfig.aiEnabled) {
+    console.log('\n🤖 AI Analysis Active:');
+    console.log('   ✓ Pattern recognition: ENABLED');
+    console.log('   ✓ Anomaly detection: NO anomalies detected');
+    predictFutureMetrics();
+  }
+
   const maxUsage = Math.max(cpuUsage, memUsage, diskUsage);
   if (maxUsage > monitorConfig.alertThreshold) {
-    console.log('⚠️  System Status: WARNING - High resource usage');
+    console.log('🔴 System Status: WARNING — High resource usage detected');
   } else {
-    console.log('✅ System Status: HEALTHY');
+    console.log('🟢 System Status: HEALTHY');
   }
-  
+
   if (monitorConfig.verboseLogging) {
     console.log(`Next check in ${monitorConfig.interval}ms`);
   }
->>>>>>> dev
 }
 
-// Start monitoring
-console.log(`Monitoring every ${monitorConfig.interval}ms`);
-<<<<<<< HEAD
-setInterval(checkSystemHealth, monitorConfig.interval);
+// ----------- INITIALIZATION -----------
+if (monitorConfig.aiEnabled) {
+  console.log('Loading AI model...');
+  console.log(`✓ Model loaded from: ${monitorConfig.mlModelPath}`);
+  console.log(`✓ Cloud providers: ${monitorConfig.cloudProviders.join(', ')}`);
+}
 
-// Run first check immediately
-checkSystemHealth();
-=======
-console.log('Debug features enabled');
+// ----------- START MONITORING -----------
+console.log(`Monitoring interval: ${monitorConfig.interval}ms`);
 setInterval(checkSystemHealth, monitorConfig.interval);
-
-// Run first check immediately
 checkSystemHealth();
 
-// Development-specific: Log memory usage
+// ----------- DEV-SPECIFIC MEMORY LOGGING -----------
 if (monitorConfig.debugMode) {
   setInterval(() => {
     const memUsage = process.memoryUsage();
-    console.log('\n--- Memory Usage ---');
+    console.log('\n--- Memory Usage Snapshot ---');
     console.log(`RSS: ${(memUsage.rss / 1024 / 1024).toFixed(2)} MB`);
     console.log(`Heap Used: ${(memUsage.heapUsed / 1024 / 1024).toFixed(2)} MB`);
   }, 30000);
 }
->>>>>>> dev
+
+// ----------- BACKGROUND AI TRAINING -----------
+if (monitorConfig.aiEnabled) {
+  setInterval(() => {
+    console.log('\n🎓 Retraining AI model with new metrics...');
+    console.log('   Training accuracy: 94.7%');
+    console.log('   Model updated successfully');
+  }, 120000);
+}
